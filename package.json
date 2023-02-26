@@ -1,14 +1,13 @@
 {
-  "name": "rules.js",
+  "name": "rules.art.js",
   "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prepublish": "yarn build",
     "build": "tsc",
     "test": "yarn build && mocha tests/*.test.js",
-    "publish": "npm publish --access public"
+    "publish": "npm publish --access=public"
   },
   "keywords": [],
   "author": "",
