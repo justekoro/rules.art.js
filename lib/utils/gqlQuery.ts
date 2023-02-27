@@ -15,5 +15,5 @@ export default function gqlQuery(type: string, queryName: string, fields: Array<
         }
     }
 
-    return `${type} ${queryName} { ${fieldString} }`;
+    return `${type} { ${queryName} { ${fieldString} } }`;
 }
