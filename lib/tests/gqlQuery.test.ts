@@ -63,7 +63,11 @@ describe("gqlQuery", () => {
 
         // @ts-ignore
         assert.equal(res.data.hello.foo.bar, "Pass")
+    });
 
-    })
+    it("should be able to use more objects", () => {
+        const result = gqlQuery("query", "test", [{test: ["test", "test2", {test3: ["test4"]}]}]);
+        assert.equal(result, "query { test { test { test test2 test3 { test4 } }  } }");
+    });
 
 })
