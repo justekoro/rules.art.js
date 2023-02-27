@@ -1,1 +1,4 @@
-console.log("Package is still in WIP state, please don't use it yet.");
+import Client from "./Client";
+export {
+    Client
+}
