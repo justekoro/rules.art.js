@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rmdir dist /s /q & rm -rf dist/ & tsc",
-    "test": "yarn build && mocha dist/tests/*.test.js"
+    "test": "yarn build && mocha dist/tests/*.test.js",
+    "privateTest": "yarn build && node dist/privateTesting/index.js"
   },
   "keywords": [],
   "author": "",

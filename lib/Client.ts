@@ -35,27 +35,46 @@ export default class Client {
      */
 
     async login(email: string, password: string) : Promise<LoginResponse> {
-        const hash = crypto.createHash("sha256");
+        const hash = crypto.createHash("sha512");
         hash.update(password);
         const hashedPassword = hash.digest("hex");
-        const query = getQuery("mutation", `signIn(email: "${email}", password: ${hashedPassword})`, ["accessToken", "twoFactorAuthToken", {
+        const query = getQuery("mutation", `signIn(input: {email: "${email}", password: "${hashedPassword}"})`, ["accessToken", "twoFactorAuthToken", {
             "user": [
                 "slug",
                 "username"
             ]
         }]);
         const res = await this.sendQuery(query);
-        if (res.data.signIn.twoFactorAuthToken) {
+        if (res.twoFactorAuthToken) {
             return {
                 needs2FA: true,
-                twoFactorSecret: res.data.signIn.twoFactorAuthToken
+                twoFactorSecret: res.signIn.twoFactorAuthToken
             }
         }
-        this.token = res.data.signIn.accessToken;
+        this.token = res.accessToken;
         return {
             needs2FA: false,
-            token: res.data.signIn.accessToken,
-            username: res.data.signIn.user.username
+            token: res.accessToken,
+            username: res.user.username
+        }
+    }
+
+    async twoFactorSignIn(twoFactorToken: string, code: string) : Promise<LoginResponse> {
+        const query = getQuery("mutation", `twoFactorAuthSignIn(input: {token: "${twoFactorToken}", code: "${code}"})`, [
+            "accessToken",
+            {
+                "user": [
+                    "slug",
+                    "username"
+                ]
+            }
+        ]);
+        const res = await this.sendQuery(query);
+        this.token = res.accessToken;
+        return {
+            needs2FA: false,
+            token: res.accessToken,
+            username: res.user.username
         }
     }
 
