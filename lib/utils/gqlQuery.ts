@@ -11,8 +11,6 @@ export default function gqlQuery(type: string, queryName: string, fields: Array<
             const key = Object.keys(field)[0];
             // @ts-ignore
             const value = field[key];
-            // We could do fieldString += `${key} { ${value.join(" ")} }` but that would not work if we use objects in the array
-            // so we have to do it recursively.
             fieldString += `${key} { ${gqlQuery("", "", value, true)} } `;
         }
     }
