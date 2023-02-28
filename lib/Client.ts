@@ -10,6 +10,28 @@ type LoginResponse = {
     username?: string;
 }
 
+type User = {
+    id: string;
+    slug: string;
+    username: string;
+    cScore: number;
+    pictureUrl: string;
+    fallbackUrl: string;
+    certified: boolean;
+    twitterUsername?: string;
+    instagramUsername?: string;
+    isDiscordVisible: boolean;
+    discord: {
+        username?: string;
+        discriminator?: string;
+        id?: string;
+    }
+    starknetWallet: {
+        address: string;
+        publicKey: string;
+    }
+}
+
 export default class Client {
     token?: string;
     baseURL: string;
@@ -75,6 +97,64 @@ export default class Client {
             needs2FA: false,
             token: res.accessToken,
             username: res.user.username
+        }
+    }
+
+    async getUser(slug: string) : Promise<User> {
+        const query = getQuery("query", `user(slug: "${slug}")`, [
+            "id",
+            "slug",
+            "username",
+            "cScore",
+            {
+                starknetWallet: [
+                    "address",
+                    "publicKey"
+                ]
+            },
+            {
+                profile: [
+                    "pictureUrl",
+                    "customAvatarUrl",
+                    "fallbackUrl",
+                    "certified",
+                    "twitterUsername",
+                    "instagramUsername",
+                    "isDiscordVisible",
+                    {
+                        discordMember: [
+                            "username",
+                            "discriminator",
+                            "id"
+                        ]
+                    }
+                ]
+            }
+        ]);
+        const res = await this.sendQuery(query);
+
+        return {
+            id: res.id,
+            slug: res.slug,
+            username: res.username,
+            cScore: res.cScore,
+            pictureUrl: (
+                res.profile.customAvatarUrl || res.profile.pictureUrl || res.profile.fallbackUrl
+            ),
+            fallbackUrl: res.profile.fallbackUrl,
+            certified: res.profile.certified,
+            twitterUsername: res.profile.twitterUsername,
+            instagramUsername: res.profile.instagramUsername,
+            isDiscordVisible: res.profile.isDiscordVisible,
+            discord: {
+                username: res.profile.discordMember.username,
+                discriminator: res.profile.discordMember.discriminator,
+                id: res.profile.discordMember.id
+            },
+            starknetWallet: {
+                address: res.starknetWallet.address,
+                publicKey: res.starknetWallet.publicKey
+            }
         }
     }
 
