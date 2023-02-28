@@ -21,5 +21,15 @@
   },
   "dependencies": {
     "axios": "^1.3.4"
+  },
+  "funding": {
+    "type": "buymeacoffee",
+    "url": "https://buymeacoffee.com/justekoro"
+  },
+  "repository": {
+    "type": "git",
+    "directory": "justekoro/rules.art.js",
+    "url": "https://github.com/justekoro/rules.art.js",
+    "branch": "main"
   }
 }
