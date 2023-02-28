@@ -7,6 +7,7 @@
     <a href="https://www.npmjs.com/package/rules.art.js"><img src="https://img.shields.io/npm/v/rules.art.js.svg?style=flat-square" alt="NPM version" /></a>
     <a href="https://www.npmjs.com/package/rules.art.js"><img src="https://img.shields.io/npm/dm/rules.art.js.svg?style=flat-square" alt="NPM downloads" /></a>
     <a href="https://www.npmjs.com/package/rules.art.js"><img src="https://img.shields.io/npm/l/rules.art.js.svg?style=flat-square" alt="License" /></a>
+    <a href="https://github.com/justekoro/rules.art.js/actions"><img src="https://img.shields.io/github/actions/workflow/status/justekoro/rules.art.js/tests.yml?branch=master" alt="Tests passing" /></a>
   </p>
 </div>
 
