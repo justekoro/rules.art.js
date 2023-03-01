@@ -2,6 +2,7 @@ import axios from "axios";
 import packageDetails from "./utils/package";
 import * as crypto from "crypto";
 import getQuery from "./utils/gqlQuery";
+import gqlQuery from "./utils/gqlQuery";
 
 type LoginResponse = {
     token?: string;
@@ -158,10 +159,69 @@ export default class Client {
         }
     }
 
-    private async sendQuery(query: string, variables?: object) : Promise<any> {
+    async getMe(): Promise<User> {
+        const query = gqlQuery("query", "currentUser", [
+            "id",
+            "slug",
+            "username",
+            "cScore",
+            {
+                starknetWallet: [
+                    "address",
+                    "publicKey"
+                ]
+            },
+            {
+                profile: [
+                    "pictureUrl",
+                    "customAvatarUrl",
+                    "fallbackUrl",
+                    "certified",
+                    "twitterUsername",
+                    "instagramUsername",
+                    "isDiscordVisible",
+                    {
+                        discordMember: [
+                            "username",
+                            "discriminator",
+                            "id"
+                        ]
+                    }
+                ]
+            }
+        ]);
+        const res = await this.sendQuery(query);
+
+        return {
+            id: res.id,
+            slug: res.slug,
+            username: res.username,
+            cScore: res.cScore,
+            pictureUrl: (
+                res.profile.customAvatarUrl || res.profile.pictureUrl || res.profile.fallbackUrl
+            ),
+            fallbackUrl: res.profile.fallbackUrl,
+            certified: res.profile.certified,
+            twitterUsername: res.profile.twitterUsername,
+            instagramUsername: res.profile.instagramUsername,
+            isDiscordVisible: res.profile.isDiscordVisible,
+            discord: {
+                username: res.profile.discordMember.username,
+                discriminator: res.profile.discordMember.discriminator,
+                id: res.profile.discordMember.id
+            },
+            starknetWallet: {
+                address: res.starknetWallet.address,
+                publicKey: res.starknetWallet.publicKey
+            }
+        }
+    }
+
+    private async sendQuery(query: string, variables?: object, headers?: object) : Promise<any> {
         const res = await this.axiosClient.post("", {
             query,
-            variables
+            variables,
+            headers
         });
         if (res.data.errors) {
             throw new Error(res.data.errors[0].message);
