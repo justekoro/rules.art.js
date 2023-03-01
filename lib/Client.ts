@@ -190,7 +190,9 @@ export default class Client {
                 ]
             }
         ]);
-        const res = await this.sendQuery(query);
+        const res = await this.sendQuery(query, {}, {
+            Authorization: `Bearer ${this.token}`
+        });
 
         return {
             id: res.id,
