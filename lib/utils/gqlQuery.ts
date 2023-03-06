@@ -3,7 +3,10 @@
  */
 
 export default function gqlQuery(type: string, queryName: string, fields: Array<string | object>, isAdded?: boolean) : string {
-    let fieldString = "";
+ 	if (!type && !queryName && !fields) {
+		return null;
+	}   
+	let fieldString = "";
     for (const field of fields) {
         if (typeof field === "string") {
             fieldString += field + " ";
