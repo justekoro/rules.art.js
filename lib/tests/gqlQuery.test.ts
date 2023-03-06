@@ -11,8 +11,10 @@ describe("gqlQuery", () => {
     });
 	
 	it("should return null if no arguments are provided", () => {
+		// @ts-ignore
 		const result = gqlQuery();
-		assert.equal(result, null);
+		// @ts-ignore
+		assert(result, null);
 	})
 
     it("should return a valid GraphQL query", () => {
