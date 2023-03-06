@@ -4,7 +4,7 @@
 
 export default function gqlQuery(type: string, queryName: string, fields: Array<string | object>, isAdded?: boolean) : string {
  	if (!type && !queryName && !fields) {
-		return null;
+		return "";
 	}   
 	let fieldString = "";
     for (const field of fields) {
