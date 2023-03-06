@@ -9,6 +9,11 @@ describe("gqlQuery", () => {
         const result = gqlQuery("query", "test", ["test"]);
         assert.equal(typeof result, "string");
     });
+	
+	it("should return null if no arguments are provided", () => {
+		const result = gqlQuery();
+		assert.equal(result, null);
+	})
 
     it("should return a valid GraphQL query", () => {
         const result = gqlQuery("query", "test", ["test"]);
